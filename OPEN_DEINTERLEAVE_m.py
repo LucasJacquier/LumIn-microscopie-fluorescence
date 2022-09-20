@@ -14,7 +14,7 @@ import time as time
 ### Functions
 
 def load_tif_image(file_name: [str, 'you need to specify the work directory first']) -> np.ndarray:
-    """this fonction take the name of a tiff image and return the image as an array. The file needs to be in tiff format: file_name = 'name.tif' """
+    """this fonction takes the name of a tiff image and returns the image as an array. The file needs to be in tiff format: file_name = 'name.tif' """
     # open video as array
     video = io.volread(file_name)
     return video.astype(float)
