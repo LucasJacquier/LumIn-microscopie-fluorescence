@@ -6,9 +6,7 @@ Authors: Lucas Jacquier & Karen Perronet
 
 ### Moduls to import
 import imageio as io
-import cv2
 import numpy as np
-import matplotlib.pyplot as plt
 
 ###Preliminary Functions
 def load_tif_image(file_name: str) -> np.ndarray:
