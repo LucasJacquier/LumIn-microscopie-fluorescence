@@ -9,7 +9,6 @@ import imageio as io
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-import time as time
 
 ###Preliminary Functions
 def load_tif_image(file_name: str) -> np.ndarray:
