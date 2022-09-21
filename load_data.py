@@ -1,17 +1,23 @@
-"""
-Title: OPEN_&_DEINTERLEAVE FUNCTIONS
-Date: Sept 20 2022
-Authors: Lucas Jacquier & Karen Perronet
-"""
+from pathlib import Path
+from typing import Tuple
 
-### Moduls to import
 import imageio as io
-import cv2
 import numpy as np
-import matplotlib.pyplot as plt
-import time as time
 
-### Functions
+
+def load_data(filepath: Path)-> Tuple[np.ndarray, np.ndarray]:
+    """Return the red and green films.add()
+
+    Each film is a ndarray of shape (n_frames, n_rows, n_columns)
+
+    Args:
+        filepath (Path): path to the .tiff film
+
+    Returns:
+        Tuple[np.ndarray, np.ndarray]: (red_film, green_film)
+    """
+    pass
+
 
 def load_tif_image(file_name: [str, 'you need to specify the work directory first']) -> np.ndarray:
     """this fonction takes the name of a tiff image and returns the image as an array. The file needs to be in tiff format: file_name = 'name.tif' """
