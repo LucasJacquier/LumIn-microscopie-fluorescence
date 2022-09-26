@@ -16,7 +16,7 @@ def load_data(filepath: Union[Path, str], color_sequence: List[str]) -> Dict:
     Args:
         filepath (Union[Path, str]): path to the film (e.g.
             "c:\\users\\john\\documents\\project\\film.tif")
-        color_sequence (List[str]): initials of the laser's colors
+        color_sequence (List[str]): colors of the frames, in the correct order.
 
     Returns:
         Dict: dictionary {"color": numpy array}
