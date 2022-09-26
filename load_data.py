@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Dict, List, Union
 
-import imageio as io
+import imageio.v3 as iio
 
 
 def load_data(filepath: Union[Path, str], color_sequence: List[str]) -> Dict:
@@ -21,7 +21,7 @@ def load_data(filepath: Union[Path, str], color_sequence: List[str]) -> Dict:
     Returns:
         Dict: dictionary {"color": numpy array}
     """
-    video = io.volread(filepath).astype(float)
+    video = iio.imread(filepath).astype(float)
     n_colors = len(color_sequence)
     res_dict = {
         color: video[k_color::n_colors]
