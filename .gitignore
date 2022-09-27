@@ -130,3 +130,5 @@ dmypy.json
 
 # custom
 .vscode/*
+.DS_Store
+data/*
