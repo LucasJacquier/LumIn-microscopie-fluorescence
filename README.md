@@ -24,6 +24,7 @@ frame = movie_dict["red"][10]
 plt.imshow(frame, cmap="gray")
 plt.show()
 ```
-TODO: Add image of a frame or two.
+TODO: Add image of a frame or two.![Figure_1](https://user-images.githubusercontent.com/113975558/192475178-1bc63813-b195-4fec-9e22-214abcd8baa6.png)
+
 
 ## Detect particles
