@@ -1,10 +1,18 @@
-#fonction qui prend une image et ressort les points
 
-##Fonction percentile
+
+##Lissage des valeurs abberrantes et normalisation de 0 à 255
 import numpy as np
 
 
-def remove_outliers (film):
+def remove_outliers (film : numpy.ndarray) -> numpy.ndarray:
+    """Return the film without its extremes values.
+
+    Args:
+        film (numpy.ndarray): the fluorescent microscopy film with only one color
+
+    Returns:
+        None : the film is modified by side effect
+    """
     list_outliers = []
     for i in range(int(np.size(film)/(2*10**6))):
         new_max = np.amax(film)
@@ -19,7 +27,15 @@ def remove_outliers (film):
         film[list_outliers[l]] = definitive_max
     return None
 
-def normalize (film):
+def normalize (film : numpy.ndarray) -> numpy.ndarray:
+    """Return the film with values in an interval of [0, 255]. It is recommended to use first the remove_outliers function.
+
+    Args:
+        film (numpy.ndarray): the fluorescent microscopy film with only one color
+
+    Returns:
+        None : the film is modified by side effect
+    """
     old_extremes = [np.amin(film), np.amax(film)]
     new_extremes = [0,255]
     classe = (old_extremes[1] - old_extremes[0]) / 256
