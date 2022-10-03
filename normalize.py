@@ -22,14 +22,17 @@ def remove_outliers (film):
 def normalize (film):
     old_extremes = [np.amin(film), np.amax(film)]
     new_extremes = [0,255]
-    classe = (old_extremes[1]-old_extremes[0])/256
+    classe = (old_extremes[1] - old_extremes[0]) / 256
     dimension = np.shape(film)
     for k in range(dimension[0]):
         for l in range(dimension[1]):
             for m in range(dimension[2]):
-                film[k,l,m] = (film[k,l,m]-old_extremes[0]+1)//classe
+                if (film[k,l,m]-old_extremes[0]) % classe == 0 :
+                    film[k,l,m] = (film[k,l,m]-old_extremes[0])//classe - 1
+                else :
+                    film[k,l,m] = (film[k,l,m]-old_extremes[0])//classe
     return None
-#Le maximum est de 256 et non 255, il faut régler ce problème :'(
+
 
 
 
