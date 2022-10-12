@@ -1,26 +1,25 @@
 #%%
-#import numpy as np
-#import pandas as pd
+import numpy as np
+import pandas as pd
 import trackpy as tp
 #import skimage
 #import os
 #from scipy.signal import find_peaks
+
+
 import sys
 import warnings
 
 #from tifffile import imsave
 
-#import OPEN_DEINTERLEAVE as OD
+import OPEN_DEINTERLEAVE as OD
 
 #from link_particules import link_particles
 #from tracking import optical_flow_intensity
+ 
 
-##I don t know what this function does
-if not sys.warnoptions: #Create an empty list
+if not sys.warnoptions:
     warnings.simplefilter("ignore") # which warnings ?
-    #Insert a simple entry into the list of warnings filters (at the front)
-'Je pense que cela veut dire que s il y a une erreur le sytème doit l ignorer, mais je comprends pas trop ni comment ni ou cela agit'
-##
 
 def link_particles(
     stack: np.ndarray,
@@ -32,18 +31,20 @@ def link_particles(
 
     Args:
         video ([type]): the preprocessed video with the different filters BTWT       
-        particle_diameter (int, odd): maximum diameter of spot to be located, in pixels. Odd value just above the diffraction limit. Need to see how to optimise this value.
-        min_mass (float, optional): minimum mass (average intensity) of spot. Default value = 0.1. Need to see how to optimise this value.
-        pixel_range (int, optional): search range (maximum displacement of the spot between 2 frames) in pixels. Need optimize.
-        n_memory_frames (int, optional): maximum number of frames during which the particle can disappear, reappear and be considered as the same particle. Need optimize.
+        particle_diameter (int, odd): maximum diameter of spot to be located, in pixels. Odd value just above the diffraction limit. 
+        min_mass (float, optional): minimum mass (average intensity) of spot. Default value = 0.1.      
+        pixel_range (int, optional): search range (maximum displacement of the spot between 2 frames) in pixels.        
+        n_memory_frames (int, optional): maximum number of frames during which the particle can disappear, reappear and be considered
+        as the same particle.
     """
     
     
     # particle detection using trackpy. 
-    """the tp.batch function of trackpy detects the particles of a given particle_diameter and which mass is above the min_mass in all frames of the video"""
+    """the tp.batch function of trackpy detects the particles of a given particle_diameter and which mass is above the min_mass in all 
+    frames of the video"""
     located_particles = tp.batch(
         stack, diameter = particle_diameter, minmass = min_mass, percentile=60, engine='numba'
-    ) #We can also try to optimize the percentile. The features must have a peak brighter than pixels in this percentile.
+    )
     
     # particle linking using trackpy
     """The tp.link function of trackpy takes in input the dataframe located_particles given by tp.batch and associates the particles 
