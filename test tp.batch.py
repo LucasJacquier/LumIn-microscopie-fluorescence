@@ -23,7 +23,7 @@ def image_peak_save_show (path : Union[Path, str], color_sequence : List[str], s
 
     path (Union[Path, str]): path to the film (e.g. "c:\\users\\john\\documents\\project\\film.tif")
     color_sequence (List[str]): colors of the frames, in the correct order.
-    selection (List[str, int] = [selected_color, selected_frame) : the color and the frame selected from the film
+    selection (List[str, int] = [selected_color, selected_frame]) : the color and the frame selected from the film
     batch_parameters (List[str] = [diameter, minmass, percentile]): the parameters of the tracky.batch function to find the particles
     saving_path : path to the file where to save the images
 
@@ -36,11 +36,11 @@ def image_peak_save_show (path : Union[Path, str], color_sequence : List[str], s
 
     array_spot_R = tp.batch(film_one_color, diameter = batch_parameters[0], minmass = batch_parameters[1], percentile = batch_parameters[2]) #Peak extraction
 
-    ordinate_image0_spot, abscissa_image0_spot = (
-    array_spot_R[array_spot_R['frame'] == 0]['y'],
-    array_spot_R[array_spot_R['frame'] == 0]['x'])
-    length = len(ordinate_image0_spot)
-    int_coordinate = [(int(coordinate[i][0]), int(coordinate[i][1])) for i in range(length)] #Establishment of integers peak coordinates
+    ordinate_image_spot, abscissa_image_spot = (
+    array_spot_R[array_spot_R['frame'] == selection[1]]['y'],
+    array_spot_R[array_spot_R['frame'] == selection[1]]['x'])
+    length = len(ordinate_image_spot)
+    int_coordinate = [(int(ordinate_image_spot[i]), int(abscissa_image_spot[i])) for i in range(length)] #Establishment of integers peak coordinates
 
     modified_image = Image.new('RGB',(film_shape[1],film_shape[2])) #Creation of a new image
 
@@ -64,7 +64,7 @@ def image_peak_save_show (path : Union[Path, str], color_sequence : List[str], s
 ##Complete function
 
 def image_peak_save_show_complete (path : Union[Path, str], color_sequence : List[str], frame_selection : int, batch_parameters : list, saving_path : Union[Path, str]):
-    '''Create an image with the detected particles marked with a red dot and save it in a predefined folder. The detection parameters can be modified selecting the batch parameters.
+    '''Create an image with the detected particles marked with a red dot and save it in a predefined folder.  It also can show et save the graph of the number of detected peaks according to the frame. It is the complete version of the image_peak_save_show function. The detection parameters can be modified selecting the batch parameters.
     Args :
 
     path (Union[Path, str]): path to the film (e.g. "c:\\users\\john\\documents\\project\\film.tif")
@@ -80,8 +80,8 @@ def image_peak_save_show_complete (path : Union[Path, str], color_sequence : Lis
     '''
 
     film_rouge, film_vert = (
-        load_data(path, color_sequence) ['R'],
-        load_data(path, color_sequence) ['G']) #chargement du film
+        load_data(path, color_sequence) [color_sequence[0]],
+        load_data(path, color_sequence) [color_sequence[1]]) #chargement du film
 
     array_spot_R, array_spot_G = (
         tp.batch(film_rouge, diameter = batch_parameters[0], minmass = batch_parameters[1], percentile = batch_parameters[2]),
@@ -104,17 +104,14 @@ def image_peak_save_show_complete (path : Union[Path, str], color_sequence : Lis
     #     plt.title('Evolution du nombre de spot dans le film rouge')
     #     plt.show()
 
-    ordinate_image0_spot, abscissa_image0_spot = (
-    array_spot_R[array_spot_R['frame'] == 0]['y'],
-    array_spot_R[array_spot_R['frame'] == 0]['x'])
+    ordinate_image_spot, abscissa_image_spot = (
+    array_spot_R[array_spot_R['frame'] == frame_selection]['y'],
+    array_spot_R[array_spot_R['frame'] == frame_selection]['x'])
+    length = len(ordinate_image_spot)
+    int_coordinate = [(int(ordinate_image_spot[i]), int(abscissa_image_spot[i])) for i in range(length)] #Establishment of integers peak coordinates
 
-    length = len(ordinate_image0_spot)
-
-    coordinate = [(ordinate_image0_spot[i], abscissa_image0_spot[i]) for i in range(0,length)]
-
-    modified_image = Image.new('RGB',(film_shape[1],film_shape[2]))
-    origin_image = Image.new('RGB',(film_shape[1],film_shape[2]))
-    int_coordinate = [(int(coordinate[i][0]), int(coordinate[i][1])) for i in range(length)]
+    modified_image = Image.new('RGB',(film_shape[1],film_shape[2])) #Creation of the red dots image
+    origin_image = Image.new('RGB',(film_shape[1],film_shape[2])) #Creation of the original image
     for x in range(film_shape[1]):
         for y in range(film_shape[2]):
             color = int(film_rouge[0,x,y])
@@ -123,14 +120,14 @@ def image_peak_save_show_complete (path : Union[Path, str], color_sequence : Lis
                 modified_image.putpixel((x,y), (255, 0, 0))
             else:
                 modified_image.putpixel((x,y), (color, color, color))
-            origin_image.putpixel((x,y), (color, color, color))
+            origin_image.putpixel((x,y), (color, color, color)) #Painting of the two images
 
     modified_image.show()
-    origin_image.show()
+    origin_image.show() #Showing the images
     name_modif = str(path[re.search('Films/', path).span()[1] : -4] + '_' + str(batch_parameters) + '_R0_detectedpeaks')
     name_origin = str(path[re.search('Films/', path).span()[1] : -4] + '_' + str(batch_parameters) + '_R0_initialimage')
     modified_image.save(r'C:\Users\lucas\Documents\sciences\Mes Recherches\2022_09 ARIA 1er Stage\Images\img_auto\ ' + name_modif + '.png')
-    origin_image.save(r'C:\Users\lucas\Documents\sciences\Mes Recherches\2022_09 ARIA 1er Stage\Images\img_auto\ ' + name_origin + '.png')
+    origin_image.save(r'C:\Users\lucas\Documents\sciences\Mes Recherches\2022_09 ARIA 1er Stage\Images\img_auto\ ' + name_origin + '.png') #Saving of the images with the specified path
 
 
 ##Automatic launch of the simplified function
