@@ -4,7 +4,7 @@ import pandas as pd
 ##Background estimation
 
 def calculate_local_average(film : np.ndarray, nbr_frame : int) -> np.ndarray:
-    '''
+    '''Create a new image where each pixel from the frame is reimplaced by the average value of a 7x7 square centered on this pixel. Allow the background elimination at a next step.
 
     Args :
         film (np.ndarray): the fluorescent microscopy film with only one color.
@@ -27,3 +27,24 @@ def calculate_local_average(film : np.ndarray, nbr_frame : int) -> np.ndarray:
                 average_value = np.mean([avg_list])
                 new_film[x,y] = average_value
     return new_film
+
+
+def background_elimination (initial_frame : np.ndarray, averaged_frame : np.ndarray) -> np.ndarray:
+    '''Elimination backgroun function for one frame, with the background estimation from the calculate_local_average function.
+
+    Args :
+        initial_frame (np.ndarray) :  One frame from the fluorescent microscopy film with only one color.
+        averaged_frame (np.ndarray) : The initial_frame averaged by square with the calculate_local_average function.
+
+    Returns :
+        np.ndarray : the initial frame corrected with a background elimination
+    '''
+    frame_shape = np.shape (initial_frame)
+    for x in range(frame_shape[0]):
+        for y in range(frame_shape[1]):
+            initial_frame[x,y]-= averaged_frame[x,y]
+        return initial_frame
+
+
+
+
