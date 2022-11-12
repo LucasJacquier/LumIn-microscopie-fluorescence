@@ -41,4 +41,5 @@ from background_estimation import all
 averaged_movie_dict = calculate_local_average(movie_dict["G"], 10)
 
 averaged_movie_dict # One specific frame (here, for the example it is the 10th) of movie_dict['color'] (here, for the example it is the green one), with averaged pixel value
-#Produire l'img qui va là
+'''
+Produire l'img qui va là
