@@ -38,8 +38,8 @@ Example of a frame
 from background_estimation import all
 #Je sais pas si je dois mettre l'import de numpy et pandas aussi
 
-averaged_movie_dict = calculate_local_average(movie_dict["G"], 10)
+averaged_movie_dict = calculate_local_average(movie_dict["R"], 10)
 
-averaged_movie_dict # One specific frame (here, for the example it is the 10th) of movie_dict['color'] (here, for the example it is the green one), with averaged pixel value
+averaged_movie_dict # One specific frame of movie_dict['color'], with averaged pixel value (here it is the 10th from the red movie)
 ```
 Produire l'img qui va là
