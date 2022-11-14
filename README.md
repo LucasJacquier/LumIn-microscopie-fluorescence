@@ -44,6 +44,7 @@ averaged_movie_img = calculate_local_average(movie_dict["R"], 10)
 averaged_movie_img #One specific frame of movie_dict['color'], with averaged pixel value (here it is the frame 10 from the red movie)
 ```
 Example on an averaged image
+
 ![calculate_local_average_Print_with_plt](https://user-images.githubusercontent.com/113975558/201638778-6a66a395-6484-4a4a-a1d6-a8d8faed9c18.png)
 
 Then, it is possible to eliminate the background
@@ -53,4 +54,5 @@ background_substracted_img = background_elimination_substract(movie_dict["R"][10
 background_substracted_img # Specific frame with the background elimination method applied to it(here : frame 10, red movie)
 ```
 Example of an background eliminated image
+
 ![background_elimination_substract_print_with_plt](https://user-images.githubusercontent.com/113975558/201640395-a759ec38-6f9f-4eef-acff-f3c5cf299eed.png)
