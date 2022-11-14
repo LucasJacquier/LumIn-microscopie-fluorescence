@@ -29,7 +29,7 @@ def calculate_local_average(film : np.ndarray, nbr_frame : int) -> np.ndarray:
     return new_film
 
 
-def background_elimination (initial_frame : np.ndarray, averaged_frame : np.ndarray) -> np.ndarray:
+def background_elimination_substract (initial_frame : np.ndarray, averaged_frame : np.ndarray) -> np.ndarray:
     '''Elimination backgroun function for one frame, with the background estimation from the calculate_local_average function.
 
     Args :
