@@ -37,7 +37,8 @@ Example of a frame
 First, it is needed to calculate the background
 ```python
 from background_estimation import all
-#Je sais pas si je dois mettre l'import de numpy et pandas aussi
+#N'importer que la fonction utile et pas all
+#Pas besoin d'importer numpy et pandas aussi
 
 averaged_movie_img = calculate_local_average(movie_dict["R"], 10)
 
