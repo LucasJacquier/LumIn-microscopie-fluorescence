@@ -46,5 +46,49 @@ def background_elimination_substract (initial_frame : np.ndarray, averaged_frame
         return initial_frame
 
 
+## Different techniques of background estimation
+import cv2 as cv
+from skimage import restoration
 
 
+img_init = load_data('C:/Users/lucas/Documents/sciences/Mes Recherches/2022_09 ARIA 1er Stage/Films/EMCV1_0524_1RRL.tif', '[R,D]')['R'][1]
+filter_size = int(input('Choose the size of the kernel filter size'))
+kernel = np.ones((filter_size,filter_size),np.float32)/(filter_size**2)
+
+#Cette fonction est efficace mais je sais pas trop les calculs qu'elle fait
+dst = cv.filter2D(img_init, -1,kernel)
+plt.imshow(dst, cmap= 'gray')
+plt.show()
+
+#Averaging convolution
+blur = cv.blur(img_init,(filter_size, filter_size))
+plt.imshow(blur, cmap = 'gray')
+plt.show()
+
+#Gaussian blurring with a type given kernel
+blur = cv.GaussianBlur(img_init,(filter_size, filter_size),0)
+plt.imshow(blur, cmap = 'gray')
+plt.show()
+
+#Gaussian blurring on the whole image
+x_size_img = np.shape(img_init)[0]
+if x_size_img % 2 == 0:
+    x_size_img -= 1
+blur = cv.GaussianBlur(img_init,(x_size_img,x_size_img),0)
+plt.imshow(blur, cmap = 'gray')
+plt.show()
+
+#Median blurring
+#Je comprends pas pourquoi cette fonction ne marche pas
+img_int_init = np.ones((512,512), np.int32)
+for i in range (np.shape(img_init)[0]):
+    for k in range(np.shape(img_init)[1]):
+        img_int_init[i,k] = int(img_init[i,k])
+
+median = cv.medianBlur(img_int_init, np.ones((512,512), np.int32), 5)
+
+#Rollingball
+#Donne des résultats étranges mais forme de jolies images
+background = restoration.rolling_ball(img_init, radius=100)
+plt.imshow(background, cmap = 'gray')
+plt.show()
