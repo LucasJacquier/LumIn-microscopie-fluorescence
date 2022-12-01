@@ -29,29 +29,12 @@ def calculate_local_average(film : np.ndarray, nbr_frame : int) -> np.ndarray:
     return new_film
 
 
-def background_elimination_substract (initial_frame : np.ndarray, averaged_frame : np.ndarray) -> np.ndarray:
-    '''Elimination backgroun function for one frame, with the background estimation from the calculate_local_average function.
-
-    Args :
-        initial_frame (np.ndarray) :  One frame from the fluorescent microscopy film with only one color.
-        averaged_frame (np.ndarray) : The initial_frame averaged by square with the calculate_local_average function.
-
-    Returns :
-        np.ndarray : the initial frame corrected with a background elimination
-    '''
-    frame_shape = np.shape (initial_frame)
-    for x in range(frame_shape[0]):
-        for y in range(frame_shape[1]):
-            initial_frame[x,y]-= averaged_frame[x,y]
-        return initial_frame
-
-
 ## Different techniques of background estimation
 import cv2 as cv
 from skimage import restoration
 
 
-img_init = load_data('C:/Users/lucas/Documents/sciences/Mes Recherches/2022_09 ARIA 1er Stage/Films/EMCV1_0524_1RRL.tif', '[R,D]')['R'][1]
+img_init = load_data('C:/Users/lucas/Documents/sciences/Mes Recherches/2022_09 ARIA 1er Stage/Films/A6_0831_8RRL.tif', '[R,D]')['R'][10]
 filter_size = int(input('Choose the size of the kernel filter size'))
 kernel = np.ones((filter_size,filter_size),np.float32)/(filter_size**2)
 
@@ -89,6 +72,24 @@ median = cv.medianBlur(img_int_init, np.ones((512,512), np.int32), 5)
 
 #Rollingball
 #Donne des résultats étranges mais forme de jolies images
-background = restoration.rolling_ball(img_init, radius=100)
+background = restoration.rolling_ball(img_init, radius=filter_size)
 plt.imshow(background, cmap = 'gray')
 plt.show()
+
+##Background substraction
+
+def background_elimination_substract (initial_frame : np.ndarray, averaged_frame : np.ndarray) -> np.ndarray:
+    '''Elimination backgroun function for one frame, with the background estimation from the calculate_local_average function.
+
+    Args :
+        initial_frame (np.ndarray) :  One frame from the fluorescent microscopy film with only one color.
+        averaged_frame (np.ndarray) : The initial_frame averaged by square with the calculate_local_average function.
+
+    Returns :
+        np.ndarray : the initial frame corrected with a background elimination
+    '''
+    frame_shape = np.shape (initial_frame)
+    for x in range(frame_shape[0]):
+        for y in range(frame_shape[1]):
+            initial_frame[x,y]-= averaged_frame[x,y]
+        return initial_frame
