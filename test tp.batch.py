@@ -11,7 +11,7 @@ from load_data import load_data
 ##Path of the films
 
 #path = 'write the path of the film'
-#path = 'C:/Users/lucas/Documents/sciences/Mes Recherches/2022_09 ARIA 1er Stage/Films/EMCV1_0524_1RRL.tif'
+path = 'C:/Users/lucas/Documents/sciences/Mes Recherches/2022_09 ARIA 1er Stage/Films/A6_0831_8RRL.tif'
 #path = 'C:/Users/lucas/Documents/Science_ENS/matériel stage ARIA/A6_0831_8RRL.tif'
 
 ##Simplified function
@@ -32,7 +32,7 @@ def image_peak_save_show (path : Union[Path, str], color_sequence : List[str], s
         None
 
     '''
-    film_one_color = load_data(path, color_sequence) [selection[0]] #Film loading
+    film_one_color = load_data(path, color_sequence) [selection[0]] #Film loadingcolo
 
     array_spot_R = tp.batch(film_one_color, diameter = batch_parameters[0], minmass = batch_parameters[1], percentile = batch_parameters[2]) #Peak extraction
 
