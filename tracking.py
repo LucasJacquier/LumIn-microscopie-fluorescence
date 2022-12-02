@@ -19,15 +19,20 @@ img_height = np.shape(red_movie)[2]
 
 point_A = peak_position[ peak_position["frame"] == 0 ].iloc[0]
 x_A = peak_position[ peak_position["frame"] == 0 ].iloc[0]['x']
+y_A = peak_position[ peak_position["frame"] == 0 ].iloc[0]['y']
 int_x_number = np.shape(peak_position[peak_position["frame"] == 0])[0] / 100 #Proposition de garder 1% des points les plus proches, ici ca nous en fait 25
-int_x_value = 2 #Il doit y avoir un moyen d'avoir un codage un peu plus fin de ce paramètre. Demander à Karen de combien elle estime le mouvement des particules. En sélectionnant la frame suivante, on obtient 10 points.
+int_x_value = 5 #Il doit y avoir un moyen d'avoir un codage un peu plus fin de ce paramètre. Demander à Karen de combien elle estime le mouvement des particules. En sélectionnant la frame suivante, on obtient 10 points.
+int_y_value = 5
 
 #selected_x = peak_position[peak_position["x"] > (x_A-int_x_value) & peak_position["x"] < (x_A+int_x_value)]
 #Ne marche pas, j'ai obtenu cette erreur :
 #TypeError: Cannot perform 'rand_' with a dtyped [float64] array and scalar of type [bool]
 peak_position_1 = peak_position[ peak_position["frame"] == 1 ]
-selected_x = peak_position_1[peak_position_1["x"] > x_A - int_x_value]
+selected_x = peak_position_1[peak_position_1['x'] > x_A - int_x_value]
 selected_x = selected_x[selected_x ['x'] < (x_A+int_x_value)]
+
+selected_y = peak_position_1[peak_position_1['y'] > y_A - int_y_value]
+selected_y = selected_y[selected_y ['y'] < (y_A+int_y_value)]
 
 
 # Sélection d'un point A de la frame n
