@@ -1,6 +1,13 @@
+#path = 'C:/Users/lucas/Documents/sciences/Mes Recherches/2022_09 ARIA 1er Stage/Films/A6_0831_8RRL.tif'
+#path = 'C:/Users/lucas/Documents/Science_ENS/matériel stage ARIA/A6_0831_8RRL.tif'
+
+import numpy as np
+import pandas as pd
+import random as rd
+
 ##Creation du dataframe
 
-film = load_data('C:/Users/lucas/Documents/Science_ENS/matériel stage ARIA/A6_0831_8RRL.tif', '[RG]')
+film = load_data('C:/Users/lucas/Documents/sciences/Mes Recherches/2022_09 ARIA 1er Stage/Films/A6_0831_8RRL.tif', '[RG]')
 red_movie = film['R']
 peak_position = detect_peaks(red_movie, 5, 0.1, 60)
 
@@ -17,24 +24,57 @@ frame_number = np.shape(red_movie)[0]
 img_width = np.shape(red_movie)[1]
 img_height = np.shape(red_movie)[2]
 
-point_A = peak_position[ peak_position["frame"] == 0 ].iloc[0]
-x_A = peak_position[ peak_position["frame"] == 0 ].iloc[0]['x']
-y_A = peak_position[ peak_position["frame"] == 0 ].iloc[0]['y']
 int_x_number = np.shape(peak_position[peak_position["frame"] == 0])[0] / 100 #Proposition de garder 1% des points les plus proches, ici ca nous en fait 25
-int_x_value = 5 #Il doit y avoir un moyen d'avoir un codage un peu plus fin de ce paramètre. Demander à Karen de combien elle estime le mouvement des particules. En sélectionnant la frame suivante, on obtient 10 points.
+int_x_value = 5 #Il doit y avoir un moyen d'avoir un codage un peu plus fin de ce paramètre. Demander à Karen de combien elle estime le mouvement des particules. Avec un intervalle sur x, j'obtiens dans cet exemple 55 candidats.
 int_y_value = 5
 
-#selected_x = peak_position[peak_position["x"] > (x_A-int_x_value) & peak_position["x"] < (x_A+int_x_value)]
-#Ne marche pas, j'ai obtenu cette erreur :
-#TypeError: Cannot perform 'rand_' with a dtyped [float64] array and scalar of type [bool]
-peak_position_1 = peak_position[ peak_position["frame"] == 1 ]
-selected_x = peak_position_1[peak_position_1['x'] > x_A - int_x_value]
-selected_x = selected_x[selected_x ['x'] < (x_A+int_x_value)]
+##Liste de points candidats à la frame 1
 
-selected_y = peak_position_1[peak_position_1['y'] > y_A - int_y_value]
-selected_y = selected_y[selected_y ['y'] < (y_A+int_y_value)]
+candidate_list = pd.DataFrame(columns=['y', 'x', 'mass', 'size', 'ecc', 'signal', 'raw_mass', 'ep', 'frame'], index=range(0)) #Creation du dataframe vide qui acceuillera les points candidats des frames suivantes
+for position in range(np.shape(peak_position[ peak_position["frame"] == 0 ])[0]):
+#position = rd.randint (0, 2551) # Ok pour 0, 1159. 2 candidats pour 2243, 167
+
+    point_A = peak_position[ peak_position["frame"] == 0 ].iloc[position]
+    x_A = peak_position[ peak_position["frame"] == 0 ].iloc[position]['x']
+    y_A = peak_position[ peak_position["frame"] == 0 ].iloc[position]['y']
+
+    peak_position_1 = peak_position[ peak_position["frame"] == 1 ]
+    selected_x = peak_position_1[peak_position_1['x'] > x_A - int_x_value]
+    selected_x = selected_x[selected_x ['x'] < (x_A+int_x_value)]
+
+    selected_y = peak_position_1[peak_position_1['y'] > y_A - int_y_value]
+    selected_y = selected_y[selected_y ['y'] < (y_A+int_y_value)]
+    intersect = pd.merge (selected_y, selected_x) #Liste de tous les points candidats
+    if np.shape(intersect)[0] == 0:
+        data = {'y': ['NaN'],
+            'x': ['NaN'],
+            'mass': ['NaN'],
+            'size': ['NaN'],
+            'ecc': ['NaN'],
+            'signal': ['NaN'],
+            'raw_mass': ['NaN'],
+            'ep': ['NaN'],
+            'frame': ['NaN']}
+        candidate = pd.DataFrame(data)
+
+    if np.shape(intersect)[0] == 1:
+        candidate = intersect
+
+    if np.shape(intersect)[0] >= 2:
+        distance_list = []
+        for i in range(np.shape(intersect)[0]):
+            x_candidate = intersect.iloc[i]['x']
+            y_candidate = intersect.iloc[i]['x']
+            distance_list.append((x_candidate - x_A)**2 + (y_candidate - y_A)**2)
+        candidate_index = distance_list.index(min(distance_list)) #Distance comparison between the peak and the candidates
+        candidate = intersect.iloc[candidate_index].to_frame().transpose()
+
+    candidate_list = pd.concat ([candidate_list, candidate])
+print (candidate_list)
+#On obtient un data frame qui contient toutes les infos des points candidats de la frame 1 correspondant aux points de la frame 0. Il faudrait ajouter une colonne correspondant au numéro du point d'origine dans la frame 0, ce qui pourrait permettre de retirer toutes les lignes vides.
 
 
+##Plan de l'algorithme à réaliser
 # Sélection d'un point A de la frame n
 # Enregistrement de ses paramètres, notamment x_A et y_A
 # Sélection des points dans l'intervalle : [ x_A - int_x ; x_A + int_x] appartenant aux frames : n< frame < n+m
