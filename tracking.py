@@ -30,7 +30,7 @@ int_y_value = 5
 
 ##Liste de points candidats à la frame 1
 
-candidate_list = pd.DataFrame(columns=['y', 'x', 'mass', 'size', 'ecc', 'signal', 'raw_mass', 'ep', 'frame'], index=range(0)) #Creation du dataframe vide qui acceuillera les points candidats des frames suivantes
+candidate_list = pd.DataFrame(columns=['y', 'x', 'mass', 'size', 'ecc', 'signal', 'raw_mass', 'ep', 'frame', 'peak_index'], index=range(0)) #Creation du dataframe vide qui acceuillera les points candidats des frames suivantes
 for position in range(np.shape(peak_position[ peak_position["frame"] == 0 ])[0]):
 #position = rd.randint (0, 2551) # Ok pour 0, 1159. 2 candidats pour 2243, 167
 
@@ -54,11 +54,13 @@ for position in range(np.shape(peak_position[ peak_position["frame"] == 0 ])[0])
             'signal': ['NaN'],
             'raw_mass': ['NaN'],
             'ep': ['NaN'],
-            'frame': ['NaN']}
+            'frame': ['NaN'],
+            'peak_index' : [position]}
         candidate = pd.DataFrame(data)
 
     if np.shape(intersect)[0] == 1:
         candidate = intersect
+        candidate['peak_index'] = [position]
 
     if np.shape(intersect)[0] >= 2:
         distance_list = []
@@ -68,10 +70,11 @@ for position in range(np.shape(peak_position[ peak_position["frame"] == 0 ])[0])
             distance_list.append((x_candidate - x_A)**2 + (y_candidate - y_A)**2)
         candidate_index = distance_list.index(min(distance_list)) #Distance comparison between the peak and the candidates
         candidate = intersect.iloc[candidate_index].to_frame().transpose()
+        candidate['peak_index'] = [position]
 
     candidate_list = pd.concat ([candidate_list, candidate])
 print (candidate_list)
-#On obtient un data frame qui contient toutes les infos des points candidats de la frame 1 correspondant aux points de la frame 0. Il faudrait ajouter une colonne correspondant au numéro du point d'origine dans la frame 0, ce qui pourrait permettre de retirer toutes les lignes vides.
+#On obtient un data frame qui contient toutes les infos des points candidats de la frame 1 correspondant aux points de la frame 0. Il y a de plus une colonne correspondant au numéro du peak de la frame 1. Mtn on peut étirer ça sur toutes les frames suivantes.
 
 
 ##Plan de l'algorithme à réaliser
