@@ -1,13 +1,5 @@
-#load_data.py
-pathlib
-typing
-imageio.v3
-
-#test tp.batch.py
+imageio
+matplotlib
 numpy
 pandas
 trackpy
-matplotlib.pyplot
-re
-from PIL import Image
-

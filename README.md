@@ -57,3 +57,12 @@ background_substracted_img # Specific frame with the background elimination meth
 Example of an background eliminated image
 
 ![background_elimination_substract_print_with_plt](https://user-images.githubusercontent.com/113975558/201640395-a759ec38-6f9f-4eef-acff-f3c5cf299eed.png)
+
+
+## Observations
+
+- To display, it is better to clip the high values (to the 95% percentile).
+- interesting plot: intensity distribution across time
+- interesting plot: background across time
+- minimum clipping without creating new peaks
+- removing background does not change the peak detection (verify)
