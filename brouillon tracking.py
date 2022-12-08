@@ -46,3 +46,11 @@ tp.plot_traj(t_1_reduced_3)
 t_1_reduced_5 = t_1[t_1['particle']%5 == 0]
 plt.figure()
 tp.plot_traj(t_1_reduced_5)
+
+particle_index = 2372
+plt.plot(t_1[t_1['particle'] == particle_index]['mass'])
+plt.figure()
+
+plt.plot(t_1[t_1['particle'] == particle_index]['signal'])
+plt.figure()
+plt.show()
