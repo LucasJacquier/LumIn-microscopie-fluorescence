@@ -54,3 +54,33 @@ plt.figure()
 plt.plot(t_1[t_1['particle'] == particle_index]['signal'])
 plt.figure()
 plt.show()
+
+d = tp.compute_drift(t)
+d.plot()
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

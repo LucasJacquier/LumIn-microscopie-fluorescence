@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 ##Background estimation
 
@@ -38,7 +39,7 @@ img_init = load_data('C:/Users/lucas/Documents/sciences/Mes Recherches/2022_09 A
 filter_size = int(input('Choose the size of the kernel filter size'))
 kernel = np.ones((filter_size,filter_size),np.float32)/(filter_size**2)
 
-#Cette fonction est efficace mais je sais pas trop les calculs qu'elle fait
+#Cette fonction est efficace mais je sais pas trop les calculs qu'elle fait : 2D-Convolution
 dst = cv.filter2D(img_init, -1,kernel)
 plt.imshow(dst, cmap= 'gray')
 plt.show()
