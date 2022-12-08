@@ -11,10 +11,10 @@ from pathlib import Path
 from load_data import load_data
 
 filepath = Path(...)  # path to the .tiff or .tif file
-color_sequence = ["R", "G"]  # [R frame, G frame, R frame,...] (with "R" for red and "G" for green)
+color_sequence = 'RG'  # means :[Red frame, Green frame, Red frame, ...]
 
 # red_film and green_film are of shape (n_frames, n_rows, n_columns).
-movie_dict = load_data(filepath)
+movie_dict = load_data(filepath, color_sequence)
 
 movie_dict["R"]  # array of shape (n_red_frames, n_rows, n_cols)
 movie_dict["G"]  # array of shape (n_green_frames, n_rows, n_cols)
@@ -25,7 +25,7 @@ plt.imshow(frame, cmap="gray")
 plt.show()
 ```
 Example of a frame
-(from our data : EMCV1_0524_1RRL, red, 10th frame)
+(from our data : EMCV1_0524_1RRL, red, 11th frame)
 
 ![initial_image_print_with_plt](https://user-images.githubusercontent.com/113975558/201638553-98618c64-fb45-496e-ac58-5ae9aa413e7e.png)
 
