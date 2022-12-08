@@ -34,7 +34,7 @@ import cv2 as cv
 from skimage import restoration
 
 
-img_init = load_data('C:/Users/lucas/Documents/sciences/Mes Recherches/2022_09 ARIA 1er Stage/Films/A6_0831_8RRL.tif', '[R,D]')['R'][10]
+img_init = load_data('C:/Users/lucas/Documents/sciences/Mes Recherches/2022_09 ARIA 1er Stage/Films/A6_0831_8RRL.tif', 'RD')['R'][10]
 filter_size = int(input('Choose the size of the kernel filter size'))
 kernel = np.ones((filter_size,filter_size),np.float32)/(filter_size**2)
 

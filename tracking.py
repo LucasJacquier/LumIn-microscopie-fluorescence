@@ -11,23 +11,6 @@ film = load_data('C:/Users/lucas/Documents/sciences/Mes Recherches/2022_09 ARIA 
 red_movie = film['R']
 peak_position = detect_peaks(red_movie, 5, 0.1, 60)
 
-##Manipulation du dataframe
-
-peak_position['x']
-peak_position[ peak_position["frame"] == 0 ]
-peak_position[ peak_position["frame"] == 0 ].iloc[0]
-
-pp_sorted_0 = peak_position[peak_position["frame"] == 0].sort_values(by="x", ascending=False)
-pp_sorted_1 = peak_position[peak_position["frame"] == 1].sort_values(by="x", ascending=False)
-
-frame_number = np.shape(red_movie)[0]
-img_width = np.shape(red_movie)[1]
-img_height = np.shape(red_movie)[2]
-
-int_x_number = np.shape(peak_position[peak_position["frame"] == 0])[0] / 100 #Proposition de garder 1% des points les plus proches, ici ca nous en fait 25
-int_x_value = 5 #Il doit y avoir un moyen d'avoir un codage un peu plus fin de ce paramètre. Demander à Karen de combien elle estime le mouvement des particules. Avec un intervalle sur x, j'obtiens dans cet exemple 55 candidats.
-int_y_value = 5
-
 ##Liste de points candidats à la frame 1
 
 candidate_list = pd.DataFrame(columns=['y', 'x', 'mass', 'size', 'ecc', 'signal', 'raw_mass', 'ep', 'frame', 'peak_index'], index=range(0)) #Creation du dataframe vide qui acceuillera les points candidats des frames suivantes
@@ -90,5 +73,21 @@ print (candidate_list)
 # Selection du point suivant de la frame n
 # etc.
 
+##Manipulation du dataframe
+
+peak_position['x']
+peak_position[ peak_position["frame"] == 0 ]
+peak_position[ peak_position["frame"] == 0 ].iloc[0]
+
+pp_sorted_0 = peak_position[peak_position["frame"] == 0].sort_values(by="x", ascending=False)
+pp_sorted_1 = peak_position[peak_position["frame"] == 1].sort_values(by="x", ascending=False)
+
+frame_number = np.shape(red_movie)[0]
+img_width = np.shape(red_movie)[1]
+img_height = np.shape(red_movie)[2]
+
+int_x_number = np.shape(peak_position[peak_position["frame"] == 0])[0] / 100 #Proposition de garder 1% des points les plus proches, ici ca nous en fait 25
+int_x_value = 5 #Il doit y avoir un moyen d'avoir un codage un peu plus fin de ce paramètre. Demander à Karen de combien elle estime le mouvement des particules. Avec un intervalle sur x, j'obtiens dans cet exemple 55 candidats.
+int_y_value = 5
 
 
